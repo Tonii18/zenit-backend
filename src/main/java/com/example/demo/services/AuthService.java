@@ -47,6 +47,7 @@ public class AuthService {
 		user.setPhone(userDTO.getPhone());
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		user.setRole("ROLE_USER");
+		user.setVerified(false);
 		
 		userRepo.save(user);
 	}
