@@ -23,18 +23,18 @@ import com.example.demo.services.AuthService;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-	
+
 	@Autowired
 	private AuthService authService;
-	
+
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Autowired
 	private EmailPort emailPort;
-	
+
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody Map<String, String> request){
+	public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
 		try {
 			String token = authService.login(request.get("email"), request.get("password"));
 			return ResponseEntity.ok(Map.of("token", token));
@@ -44,41 +44,45 @@ public class AuthController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
 		}
 	}
-	
+
 	@PostMapping("/register")
-	public ResponseEntity<?> register(@RequestBody UserDTO userDto){
+	public ResponseEntity<?> register(@RequestBody UserDTO userDto) {
 		authService.register(userDto);
 		return ResponseEntity.ok("User registered succesfully!");
 	}
-	
+
 	/*
 	 * These methods are used to verify an user by using his email
 	 */
-	
+
 	@PostMapping("/send/verification")
 	public boolean sendVerification(@RequestBody Map<String, String> body) {
-		User user = userRepo.findByEmail(body.get("email")).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-		
+		User user = userRepo.findByEmail(body.get("email"))
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
 		String url = "http://localhost:8080/auth/verify?userId=" + user.getId();
-		
-		String content =
-	            "<h2>Verificación de cuenta</h2>" +
-	            "<p>Pulsa el botón para verificar tu cuenta de Zenit</p>" +
-	            "<a href=\"" + url + "\">Verificar cuenta</a>";
-		
+
+		String content = "<h2>Verificación de cuenta</h2>" + "<p>Pulsa el botón para verificar tu cuenta de Zenit</p>"
+				+ "<a href=\"" + url + "\">Verificar cuenta</a>";
+
 		EmailBody emailBody = new EmailBody(user.getEmail(), content, "Verificación de cuenta");
-		
+
 		return emailPort.sendEmail(emailBody);
 	}
-	
+
 	@GetMapping("/verify")
 	public String verifyUser(@RequestParam Long userId) {
 		User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-		
+
 		user.setVerified(true);
 		userRepo.save(user);
-		
+
 		return "Cuenta verificada correctamente";
 	}
 
+	@GetMapping("/is/verified")
+	public ResponseEntity<Map<String, Boolean>> isVerified(@RequestParam String email) {
+		boolean verified = authService.isVerified(email);
+		return ResponseEntity.ok(Map.of("verified", verified));
+	}
 }
