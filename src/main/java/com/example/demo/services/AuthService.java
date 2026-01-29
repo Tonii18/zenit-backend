@@ -9,7 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.User;
+import com.example.demo.entities.UserProfile;
 import com.example.demo.models.UserDTO;
+import com.example.demo.models.UserProfileDTO;
+import com.example.demo.repository.UserProfileRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtTokenProvider;
 
@@ -21,6 +24,9 @@ public class AuthService {
 
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private UserProfileRepository userProfileRepo;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -54,5 +60,27 @@ public class AuthService {
 
 	public boolean isVerified(String email) {
 		return userRepo.findByEmail(email).map(User::isVerified).orElse(false);
+	}
+	
+	public void saveUserProfile(UserProfileDTO dto) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		
+		User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+		
+		if(userProfileRepo.existsByUser(user)) {
+			throw new RuntimeException("User profile already exists");
+		}
+		
+		UserProfile profile = new UserProfile();
+		
+		profile.setUser(user);
+		profile.setHeightCm(dto.getHeightCm());
+		profile.setWeightKg(dto.getWeightKg());
+		profile.setAge(dto.getAge());
+		profile.setGender(dto.getGender());
+		profile.setDailyStepsGoal(dto.getDailyStepsGoal());
+		
+		userProfileRepo.save(profile);
 	}
 }

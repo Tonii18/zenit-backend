@@ -1,10 +1,10 @@
 package com.example.demo.entities;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -17,22 +17,21 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class User {
+@Table(name = "users_profiles")
+public class UserProfile {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String email;
-	private String username;
-	private String phone;
-	private String password;
-	private String role;
+	@OneToOne
+	@JoinColumn(name = "user_id", nullable = false, unique = true)
+	private User user;
 	
-	private boolean isVerified;
-	
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private UserProfile profile;
+	private int heightCm;
+	private int weightKg;
+	private int age;
+	private String gender;
+	private Long dailyStepsGoal;
 
 }

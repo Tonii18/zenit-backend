@@ -17,6 +17,7 @@ import com.example.demo.email.EmailBody;
 import com.example.demo.email.EmailPort;
 import com.example.demo.entities.User;
 import com.example.demo.models.UserDTO;
+import com.example.demo.models.UserProfileDTO;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.AuthService;
 
@@ -84,5 +85,12 @@ public class AuthController {
 	public ResponseEntity<Map<String, Boolean>> isVerified(@RequestParam String email) {
 		boolean verified = authService.isVerified(email);
 		return ResponseEntity.ok(Map.of("verified", verified));
+	}
+	
+	@PostMapping("/data/compilation")
+	public ResponseEntity<?> registerUserData(UserProfileDTO userProfileDTO){
+		authService.saveUserProfile(userProfileDTO);
+		
+		return ResponseEntity.ok().build();
 	}
 }
