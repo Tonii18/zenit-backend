@@ -81,6 +81,8 @@ public class AuthService {
 		profile.setGender(dto.getGender());
 		profile.setDailyStepsGoal(dto.getDailyStepsGoal());
 		
+		user.setProfile(profile);
+		
 		userProfileRepo.save(profile);
 	}
 }

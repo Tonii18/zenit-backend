@@ -15,5 +15,5 @@ public class UserProfileDTO {
 	private int weightKg;
 	private int age;
 	private String gender;
-	private long dailyStepsGoal;
+	private double dailyStepsGoal;
 }

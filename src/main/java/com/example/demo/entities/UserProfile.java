@@ -32,6 +32,6 @@ public class UserProfile {
 	private int weightKg;
 	private int age;
 	private String gender;
-	private Long dailyStepsGoal;
+	private double dailyStepsGoal;
 
 }

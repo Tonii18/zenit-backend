@@ -88,7 +88,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/data/compilation")
-	public ResponseEntity<?> registerUserData(UserProfileDTO userProfileDTO){
+	public ResponseEntity<?> registerUserData(@RequestBody UserProfileDTO userProfileDTO){
 		authService.saveUserProfile(userProfileDTO);
 		
 		return ResponseEntity.ok().build();
