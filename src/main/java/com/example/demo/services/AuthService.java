@@ -63,10 +63,12 @@ public class AuthService {
 	}
 	
 	public void saveUserProfile(UserProfileDTO dto) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		String email = auth.getName();
 		
-		User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+		System.out.println("EMAIL RECIBIDO: " + dto.getEmail());
+		
+		User user = userRepo.findByEmail(dto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
 		
 		if(userProfileRepo.existsByUser(user)) {
 			throw new RuntimeException("User profile already exists");

@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserProfileDTO {
 	
+	private String email;
 	private int heightCm;
 	private int weightKg;
 	private int age;
