@@ -26,5 +26,12 @@ public class UserController {
 		
 		return ResponseEntity.ok(currentUser);
 	}
+	
+	@GetMapping("/name")
+	public ResponseEntity<String> getName(){
+		String name = userService.getUsername();
+		
+		return ResponseEntity.ok(name);
+	}
 
 }

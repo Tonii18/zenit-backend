@@ -51,4 +51,22 @@ public class UserServiceImpl implements UserService{
 		return currentUser;
 	}
 
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(authentication == null || !authentication.isAuthenticated()) {
+    		throw new IllegalStateException("There is no authenticated user");
+    	}
+		
+		String email = authentication.getName();
+		
+		User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + email));
+		
+		String name = user.getUsername();
+		
+		return name;
+	}
+
 }

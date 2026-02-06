@@ -5,5 +5,7 @@ import com.example.demo.models.UserProfileDTO;
 public interface UserService {
 	
 	public UserProfileDTO getCurrentUser();
+	
+	public String getUsername();
 
 }
