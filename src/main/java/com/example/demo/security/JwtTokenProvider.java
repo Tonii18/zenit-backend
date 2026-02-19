@@ -16,7 +16,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtTokenProvider {
 	
 	private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-	private final long jwtExpirationInMs = 360000;
+	private final long jwtExpirationInMs = 3600000;
 
 	public String generateToken(Authentication authentication) {
 
