@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.example.demo.entities.DailyStepsRecord;
 import com.example.demo.entities.User;
 
+@Repository("dailyStepsRecordRepository")
 public interface DailyStepsRecordRepository extends JpaRepository<DailyStepsRecord, Long>{
 	
 	// Get data from an user on a fixed date

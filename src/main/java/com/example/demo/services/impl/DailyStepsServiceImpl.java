@@ -143,7 +143,13 @@ public class DailyStepsServiceImpl implements DailyStepsService{
 		List<DailyStepsRecord> records = stepsRepo.findByUserOrderByDateDesc(user);
 		double dailyGoal = user.getProfile().getDailyStepsGoal();
 		
-		return records.stream().map(record -> mapToResponse(record, dailyGoal)).toList();
+		List<DailyStepsResponseDTO> result = new ArrayList<>();
+		
+		for (DailyStepsRecord record : records) {
+		    result.add(mapToResponse(record, dailyGoal));
+		}
+		
+		return result;
 	}
 
 	@Override
