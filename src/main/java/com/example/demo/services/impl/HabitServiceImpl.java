@@ -15,7 +15,7 @@ import com.example.demo.repository.HabitRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.HabitService;
 
-@Service
+@Service("habitService")
 public class HabitServiceImpl implements HabitService {
 
 	@Autowired
