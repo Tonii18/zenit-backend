@@ -49,7 +49,7 @@ public class WorkoutExerciseServiceImpl implements WorkoutExerciseService{
 		// TODO Auto-generated method stub
 		List<WorkoutExerciseResponseDTO> results = new ArrayList<>();
 		
-		List<WorkoutExercise> exercises = workoutRepo.findByUserIdAndDay(userId, weekDay);
+		List<WorkoutExercise> exercises = workoutRepo.findByUserIdAndWeekDay(userId, weekDay);
 		
 		for(WorkoutExercise exercise: exercises) {
 			results.add(toDto(exercise));
