@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class WorkoutExerciseRequestDTO {
 	
+	private String weekDay;
 	private String name;
 	private int sets;
 	private int reps;

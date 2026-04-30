@@ -47,7 +47,7 @@ public class WorkoutExerciseController {
 	// Get list of exercises filtered by day of the week
 	
 	@GetMapping("/workout/{weekDay}")
-	public ResponseEntity<List<WorkoutExerciseResponseDTO>> getExercises(String weekDay){
+	public ResponseEntity<List<WorkoutExerciseResponseDTO>> getExercises(@PathVariable String weekDay){
 		try {
 			Long userId = getUserId();
 			List<WorkoutExerciseResponseDTO> response = workoutService.getExercises(userId, weekDay);

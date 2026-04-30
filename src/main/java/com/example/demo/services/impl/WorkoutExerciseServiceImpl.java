@@ -34,14 +34,15 @@ public class WorkoutExerciseServiceImpl implements WorkoutExerciseService{
 		WorkoutExercise exercise = new WorkoutExercise();
 		
 		exercise.setUser(user);
+		exercise.setWeekDay(request.getWeekDay());
 		exercise.setName(request.getName());
 		exercise.setSets(request.getSets());
 		exercise.setReps(request.getReps());
 		exercise.setWeight(request.getWeight());
 		
-		WorkoutExerciseResponseDTO saved = toDto(exercise);
+		WorkoutExercise saved = workoutRepo.save(exercise);
 		
-		return saved;
+		return toDto(saved);
 	}
 
 	@Override
