@@ -14,27 +14,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.User;
-import com.example.demo.models.HabitRequestDTO;
 import com.example.demo.models.HabitResponseDTO;
+import com.example.demo.models.WorkoutExerciseRequestDTO;
+import com.example.demo.models.WorkoutExerciseResponseDTO;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.services.HabitService;
+import com.example.demo.services.WorkoutExerciseService;
 
 @RestController
-public class HabitController {
-	
-	@Autowired
-	private HabitService habitService;
+public class WorkoutExerciseController {
 	
 	@Autowired
 	private UserRepository userRepo;
 	
-	// Save new Habit
+	@Autowired
+	private WorkoutExerciseService workoutService;
 	
-	@PostMapping("/habit/save")
-	public ResponseEntity<HabitResponseDTO> save(@RequestBody HabitRequestDTO request) {
+	// Save new exercise
+	
+	@PostMapping("/workout/save")
+	public ResponseEntity<WorkoutExerciseResponseDTO> save(@RequestBody WorkoutExerciseRequestDTO request) {
 		try {
 			Long userId = getUserId();
-			HabitResponseDTO response = habitService.createHabit(request, userId);
+			WorkoutExerciseResponseDTO response = workoutService.createExercise(request, userId);
 			
 			return ResponseEntity.ok(response);
 		} catch (Exception e) {
@@ -43,13 +44,13 @@ public class HabitController {
 		}
 	}
 	
-	// Get all Habits
+	// Get list of exercises filtered by day of the week
 	
-	@GetMapping("/habit/show")
-	public ResponseEntity<List<HabitResponseDTO>> getHabits(){
+	@GetMapping("/workout/{weekDay}")
+	public ResponseEntity<List<WorkoutExerciseResponseDTO>> getExercises(String weekDay){
 		try {
 			Long userId = getUserId();
-			List<HabitResponseDTO> response = habitService.getHabits(userId);
+			List<WorkoutExerciseResponseDTO> response = workoutService.getExercises(userId, weekDay);
 			
 			return ResponseEntity.ok(response);
 		} catch (Exception e) {
@@ -58,12 +59,12 @@ public class HabitController {
 		}
 	}
 	
-	// Delete Habit
+	// Delete exercise
 	
-	@DeleteMapping("/habit/delete/{id}")
-	public ResponseEntity<Void> deleteHabit(@PathVariable Long id){
+	@DeleteMapping("/workout/delete/{id}")
+	public ResponseEntity<Void> deleteExercise(@PathVariable Long id){
 		try {
-			if(habitService.deleteHabit(id) == 0) {
+			if(workoutService.deleteExercise(id) == 0) {
 				return ResponseEntity.noContent().build();
 			}
 			
@@ -74,18 +75,6 @@ public class HabitController {
 		}
 	}
 	
-	// Check habit
-	
-	@PostMapping("/habit/check/{id}")
-	public ResponseEntity<HabitResponseDTO> checkHabit(@PathVariable Long id) {
-	    try {
-	        HabitResponseDTO response = habitService.checkHabit(id);
-	        
-	        return ResponseEntity.ok(response);
-	    } catch (Exception e) {
-	        return ResponseEntity.internalServerError().build();
-	    }
-	}
 	
 	public Long getUserId() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
