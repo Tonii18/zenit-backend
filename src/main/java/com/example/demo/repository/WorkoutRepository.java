@@ -10,6 +10,6 @@ import com.example.demo.entities.WorkoutExercise;
 @Repository("workoutRepository")
 public interface WorkoutRepository extends JpaRepository<WorkoutExercise, Long>{
 	
-	List<WorkoutExercise> findByUserIdAndDay(Long userId, String weekDay);
+	List<WorkoutExercise> findByUserIdAndWeekDay(Long userId, String weekDay);
 
 }
