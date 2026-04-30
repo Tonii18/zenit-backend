@@ -19,7 +19,7 @@ import com.example.demo.services.WorkoutExerciseService;
 public class WorkoutExerciseServiceImpl implements WorkoutExerciseService{
 	
 	@Autowired
-	@Qualifier("workoutExerciseRepository")
+	@Qualifier("workoutRepository")
 	private WorkoutRepository workoutRepo;
 	
 	@Autowired
