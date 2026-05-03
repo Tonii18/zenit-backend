@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class ActivityRecord {
 	private double totalCalories;
 	
 	private LocalDate date;
-	private LocalDate time;
+	private LocalTime time;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)

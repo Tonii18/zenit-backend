@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,6 @@ public class ActivityRecordResponseDTO {
 	private int totalMinutes;
 	private double totalCalories;
 	private LocalDate date;
-	private LocalDate time;
+	private LocalTime time;
 
 }
