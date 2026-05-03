@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entities.ActivityRecord;
 import com.example.demo.entities.WorkoutExercise;
 
-@Repository("activityRecord")
+@Repository("activityRecordRepository")
 public interface ActivityRecordRepository extends JpaRepository<ActivityRecord, Long>{
 	
 	List<ActivityRecord> findByUserId(Long userId);
