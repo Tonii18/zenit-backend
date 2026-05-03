@@ -40,6 +40,8 @@ public class ActivityRecordController {
 			return ResponseEntity.ok(response);
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.out.println("Error: " + e.getMessage());
+	        e.printStackTrace();
 			return ResponseEntity.internalServerError().build();
 		}
 	}
