@@ -11,7 +11,7 @@ import com.example.demo.entities.DailyEmotionalState;
 @Repository("dailyEmotionalStateRepository")
 public interface DailyEmotionalStateRepository extends JpaRepository<DailyEmotionalState, Long>{
 	
-	List<DailyEmotionalState> findByUserAndDateBetween(Long userId, LocalDate beginning, LocalDate end);
+	List<DailyEmotionalState> findByUserIdAndDateBetween(Long userId, LocalDate beginning, LocalDate end);
 	
 	boolean existsByUserIdAndDate(Long userId, LocalDate date);
 }
