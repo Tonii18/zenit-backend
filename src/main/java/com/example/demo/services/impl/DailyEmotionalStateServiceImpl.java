@@ -56,7 +56,7 @@ public class DailyEmotionalStateServiceImpl implements DailyEmotionalStateServic
 		LocalDate firstDay = today.withDayOfMonth(1);
 		LocalDate lastDay = today.withDayOfMonth(today.lengthOfMonth());
 		
-		List<DailyEmotionalState> records = emotionalRepo.findByUserAndDateBetween(userId, firstDay, lastDay);
+		List<DailyEmotionalState> records = emotionalRepo.findByUserIdAndDateBetween(userId, firstDay, lastDay);
 		List<DailyEmotionalStateResponseDTO> results = new ArrayList<>();
 		
 		for(DailyEmotionalState emotion: records) {
