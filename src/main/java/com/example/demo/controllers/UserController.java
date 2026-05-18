@@ -17,9 +17,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private UserRepository userRepo;
-	
 	@GetMapping("/account/profile")
 	public ResponseEntity <UserProfileDTO> getCurrentUser(){
 		UserProfileDTO currentUser = userService.getCurrentUser();

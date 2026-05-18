@@ -27,9 +27,9 @@ public class JournalServiceImpl implements JournalService {
 	}
 
 	@Override
-	public JournalResponseDTO createEntry(JournalRequestDTO request, String email) {
+	public JournalResponseDTO createEntry(JournalRequestDTO request, Long userId) {
 		// TODO Auto-generated method stub
-		User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+		User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 		
 		PersonalJournal entry = new PersonalJournal();
 		
@@ -45,11 +45,11 @@ public class JournalServiceImpl implements JournalService {
 	}
 
 	@Override
-	public List<JournalResponseDTO> getEntries(String email) {
+	public List<JournalResponseDTO> getEntries(Long userId) {
 		// TODO Auto-generated method stub
 		List<JournalResponseDTO> results = new ArrayList<>();
 		
-		User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+		User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 		
 		List<PersonalJournal> entries = journalRepo.findByUserIdOrderByEntryDateDescEntryTimeDesc(user.getId());
 		

@@ -14,27 +14,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.User;
-import com.example.demo.models.HabitResponseDTO;
 import com.example.demo.models.WorkoutExerciseRequestDTO;
 import com.example.demo.models.WorkoutExerciseResponseDTO;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.services.UserService;
 import com.example.demo.services.WorkoutExerciseService;
 
 @RestController
 public class WorkoutExerciseController {
 	
 	@Autowired
-	private UserRepository userRepo;
+	private WorkoutExerciseService workoutService;
 	
 	@Autowired
-	private WorkoutExerciseService workoutService;
+	private UserService userService;
 	
 	// Save new exercise
 	
 	@PostMapping("/workout/save")
 	public ResponseEntity<WorkoutExerciseResponseDTO> save(@RequestBody WorkoutExerciseRequestDTO request) {
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			WorkoutExerciseResponseDTO response = workoutService.createExercise(request, userId);
 			
 			return ResponseEntity.ok(response);
@@ -49,7 +49,7 @@ public class WorkoutExerciseController {
 	@GetMapping("/workout/{weekDay}")
 	public ResponseEntity<List<WorkoutExerciseResponseDTO>> getExercises(@PathVariable String weekDay){
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			List<WorkoutExerciseResponseDTO> response = workoutService.getExercises(userId, weekDay);
 			
 			return ResponseEntity.ok(response);
@@ -74,14 +74,4 @@ public class WorkoutExerciseController {
 			return ResponseEntity.internalServerError().build();
 		}
 	}
-	
-	
-	public Long getUserId() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
-		User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-		
-		return user.getId();
-	}
-
 }

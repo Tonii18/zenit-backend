@@ -16,20 +16,21 @@ import com.example.demo.models.DailyEmotionalStateRequestDTO;
 import com.example.demo.models.DailyEmotionalStateResponseDTO;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.DailyEmotionalStateService;
+import com.example.demo.services.UserService;
 
 @RestController
 public class DailyEmotionalStateController {
 	
 	@Autowired
-	private UserRepository userRepo;
+	private DailyEmotionalStateService emotionalService;
 	
 	@Autowired
-	private DailyEmotionalStateService emotionalService;
+	private UserService userService;
 	
 	@PostMapping("/emotional/save")
 	public ResponseEntity<DailyEmotionalStateResponseDTO> save(@RequestBody DailyEmotionalStateRequestDTO request) {
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			DailyEmotionalStateResponseDTO response = emotionalService.createRecord(request, userId);
 			
 			return ResponseEntity.ok(response);
@@ -42,7 +43,7 @@ public class DailyEmotionalStateController {
 	@GetMapping("/emotional/show")
 	public ResponseEntity<List<DailyEmotionalStateResponseDTO>> showRecords(){
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			List<DailyEmotionalStateResponseDTO> response = emotionalService.getMonthRecords(userId);
 			
 			return ResponseEntity.ok(response);
@@ -51,13 +52,4 @@ public class DailyEmotionalStateController {
 			return ResponseEntity.internalServerError().build();
 		}
 	}
-	
-	public Long getUserId() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        
-        return user.getId();
-    }
-
 }

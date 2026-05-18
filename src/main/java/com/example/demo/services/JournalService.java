@@ -7,8 +7,8 @@ import com.example.demo.models.JournalResponseDTO;
 
 public interface JournalService {
 	
-	JournalResponseDTO createEntry(JournalRequestDTO request, String email);
-	List<JournalResponseDTO> getEntries(String email);
+	JournalResponseDTO createEntry(JournalRequestDTO request, Long userId);
+	List<JournalResponseDTO> getEntries(Long userId);
 	int deleteEntry(Long id);
 
 }

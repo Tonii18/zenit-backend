@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.models.JournalRequestDTO;
 import com.example.demo.models.JournalResponseDTO;
 import com.example.demo.services.JournalService;
+import com.example.demo.services.UserService;
 
 @RestController
 public class JournalController {
@@ -23,12 +24,15 @@ public class JournalController {
 	@Autowired
 	private JournalService journalService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@PostMapping("/journal/create")
 	public ResponseEntity<JournalResponseDTO> createEntry(@RequestBody JournalRequestDTO request) {
 		try {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String email = auth.getName();
-			JournalResponseDTO response = journalService.createEntry(request, email);
+			Long userId = userService.getCurrentUserId();
+			
+			JournalResponseDTO response = journalService.createEntry(request, userId);
 			
 			return ResponseEntity.ok(response);
 		} catch (Exception e) {
@@ -40,9 +44,9 @@ public class JournalController {
 	@GetMapping("/journal/entries")
 	public ResponseEntity<List<JournalResponseDTO>> getEntries() {
 		try {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String email = auth.getName();
-			List<JournalResponseDTO> entries = journalService.getEntries(email);
+			Long userId = userService.getCurrentUserId();
+			
+			List<JournalResponseDTO> entries = journalService.getEntries(userId);
 			
 			return ResponseEntity.ok(entries);
 		} catch (Exception e) {

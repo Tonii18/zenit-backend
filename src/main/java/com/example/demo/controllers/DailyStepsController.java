@@ -17,6 +17,7 @@ import com.example.demo.models.DailyStepsResponseDTO;
 import com.example.demo.models.WeekStatsResponseDTO;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.DailyStepsService;
+import com.example.demo.services.UserService;
 
 @RestController
 public class DailyStepsController {
@@ -25,14 +26,14 @@ public class DailyStepsController {
 	private DailyStepsService dailyService;
 	
 	@Autowired
-	private UserRepository userRepo;
+	private UserService userService;
 	
 	// Save or update today's steps
 	
 	@PostMapping("/steps/save")
 	public ResponseEntity<DailyStepsResponseDTO> saveOrUpdate(@RequestBody DailyStepsRequestDTO request) {
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			DailyStepsResponseDTO response = dailyService.saveOrUpdateDailyRecord(userId, request);
 			
 			return ResponseEntity.ok(response);
@@ -47,7 +48,7 @@ public class DailyStepsController {
 	@GetMapping("/steps/today")
 	public ResponseEntity<DailyStepsResponseDTO> getToday(){
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			DailyStepsResponseDTO response = dailyService.getTodayRecord(userId);
 			
 			return ResponseEntity.ok(response);
@@ -62,7 +63,7 @@ public class DailyStepsController {
 	@GetMapping("/steps/week")
 	public ResponseEntity<WeekStatsResponseDTO> getWeekStats(){
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			WeekStatsResponseDTO response = dailyService.getCurrentWeekStats(userId);
 			
 			return ResponseEntity.ok(response);
@@ -77,7 +78,7 @@ public class DailyStepsController {
 	@GetMapping("/steps/history")
 	public ResponseEntity<List<DailyStepsResponseDTO>> getHistory(){
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			List<DailyStepsResponseDTO> response = dailyService.getHistory(userId);
 			
 			return ResponseEntity.ok(response);
@@ -86,14 +87,4 @@ public class DailyStepsController {
 			return ResponseEntity.internalServerError().build();
 		}
 	}
-	
-	// Get Id from authenticated user
-	public Long getUserId() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
-		User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-		
-		return user.getId();
-	}
-
 }

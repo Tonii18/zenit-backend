@@ -7,5 +7,7 @@ public interface UserService {
 	public UserProfileDTO getCurrentUser();
 	
 	public String getUsername();
+	
+	public Long getCurrentUserId();
 
 }

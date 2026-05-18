@@ -16,25 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entities.User;
 import com.example.demo.models.ActivityRecordRequestDTO;
 import com.example.demo.models.ActivityRecordResponseDTO;
-import com.example.demo.models.WorkoutExerciseResponseDTO;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.ActivityRecordService;
+import com.example.demo.services.UserService;
 
 @RestController
 public class ActivityRecordController {
 	
 	@Autowired
-	private UserRepository userRepo;
+	private ActivityRecordService activityService;
 	
 	@Autowired
-	private ActivityRecordService activityService;
+	private UserService userService;
 	
 	// Save new activity
 	
 	@PostMapping("/activity/save")
 	public ResponseEntity<ActivityRecordResponseDTO> save(@RequestBody ActivityRecordRequestDTO request) {
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			ActivityRecordResponseDTO response = activityService.createActivity(request, userId);
 			
 			return ResponseEntity.ok(response);
@@ -51,7 +51,7 @@ public class ActivityRecordController {
 	@GetMapping("/activity/history")
 	public ResponseEntity<List<ActivityRecordResponseDTO>> getActivities(){
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			List<ActivityRecordResponseDTO> response = activityService.getActivities(userId);
 			
 			return ResponseEntity.ok(response);
@@ -76,14 +76,4 @@ public class ActivityRecordController {
 			return ResponseEntity.internalServerError().build();
 		}
 	}
-	
-	
-	public Long getUserId() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
-		User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-		
-		return user.getId();
-	}
-
 }

@@ -18,6 +18,7 @@ import com.example.demo.models.HabitRequestDTO;
 import com.example.demo.models.HabitResponseDTO;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.HabitService;
+import com.example.demo.services.UserService;
 
 @RestController
 public class HabitController {
@@ -26,14 +27,14 @@ public class HabitController {
 	private HabitService habitService;
 	
 	@Autowired
-	private UserRepository userRepo;
+	private UserService userService;
 	
 	// Save new Habit
 	
 	@PostMapping("/habit/save")
 	public ResponseEntity<HabitResponseDTO> save(@RequestBody HabitRequestDTO request) {
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			HabitResponseDTO response = habitService.createHabit(request, userId);
 			
 			return ResponseEntity.ok(response);
@@ -48,7 +49,7 @@ public class HabitController {
 	@GetMapping("/habit/show")
 	public ResponseEntity<List<HabitResponseDTO>> getHabits(){
 		try {
-			Long userId = getUserId();
+			Long userId = userService.getCurrentUserId();
 			List<HabitResponseDTO> response = habitService.getHabits(userId);
 			
 			return ResponseEntity.ok(response);
@@ -86,13 +87,4 @@ public class HabitController {
 	        return ResponseEntity.internalServerError().build();
 	    }
 	}
-	
-	public Long getUserId() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
-		User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-		
-		return user.getId();
-	}
-
 }
