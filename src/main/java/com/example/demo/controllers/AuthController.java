@@ -61,7 +61,7 @@ public class AuthController {
 		User user = userRepo.findByEmail(body.get("email"))
 				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-		String url = "http://localhost:8080/auth/verify?userId=" + user.getId();
+		String url = "https://zenit-backend-rx9o.onrender.com/auth/verify?userId=" + user.getId();
 
 		String content = "<h2>Verificación de cuenta</h2>" + "<p>Pulsa el botón para verificar tu cuenta de Zenit</p>"
 				+ "<a href=\"" + url + "\">Verificar cuenta</a>";
