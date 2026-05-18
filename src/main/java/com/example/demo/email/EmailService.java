@@ -30,7 +30,7 @@ public class EmailService implements EmailPort{
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 		
 		try {
-			helper.setFrom("clashminininio@gmail.com");
+			helper.setFrom("eltitomosca3@gmail.com");
 			helper.setTo(email);
 			helper.setText(textMessage, true);
 			helper.setSubject(subject);
